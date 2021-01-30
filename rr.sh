@@ -78,26 +78,40 @@ calcWaitingtime(){
 		is_completed=1
 		for ((i=0; i<$n; i++))
 		do
+			chart[$t]=`expr $i + 1`
 			if [ ${burst_time[$i]} -gt 0 ]
 			then
 				is_completed=0
 				if [ ${burst_time[$i]} -gt $quantum -a ${arrival_time[$i]} -le $arrival ]
 				then
-					t=`expr $t + $quantum`
+					for ((j=0; j<$quantum; j++))
+					do
+						chart[$t]=`expr $i + 1`
+						((t++))
+					done
+					#t=`expr $t + $quantum`
 					burst_time[$i]=`expr ${burst_time[$i]} - $quantum`
 					((arrival++))
 				else
 					if [ ${arrival_time[$i]} -le $arrival ]
 					then
 						((arrival++))
-						t=`expr $t + ${burst_time[$i]}`
+						for ((j=0; j<${burst_time[$i]}; j++))
+						do
+							chart[$t]=`expr $i + 1`
+							((t++))
+						done
+						#t=`expr $t + ${burst_time[$i]}`
 						burst_time[$i]=0
 						completion_time[$i]=$t
 					fi
 				fi
 			fi
 		done
-		
+		if [ $is_completed -eq 1 ]
+		then
+			h=$t
+		fi
 	done
 	
 	for ((i=0; i<$n; i++))
@@ -126,30 +140,48 @@ calcWaitingtime(){
 	echo "Average turn around time = $avgtat"
 
 
-	for ((i=0; i<8*n+n+1; i++))
+	count_cols=1
+	cols_id[0]=${chart[0]}
+	cols[0]=0
+	j=1
+	for ((i=1; i<$h; i++))
+	do
+		if [ ${chart[$i]} -ne ${chart[`expr $i - 1`]} ]
+		then
+			((count_cols++))
+			cols[$j]=$i
+			cols_id[$j]=${chart[$i]}
+			((j++))
+		fi
+	done
+
+	echo ""
+
+	for ((i=0; i<8*count_cols+count_cols+1; i++))
 	do
 		echo -n "-"
 		done
 		echo ""
 
-	for ((i=0; i<$n; i++))
+	for ((i=0; i<$count_cols; i++))
 	do
 		echo -n "|   "
-		echo -n "P${pid[$i]}"
+		echo -n "P${cols_id[$i]}"
 		echo -n "   "
 	done
 	echo "|"
-	for ((i=0; i<8*n+n+1; i++))
+	for ((i=0; i<8*count_cols+count_cols+1; i++))
 	do
 		echo -n "-"
 		done
 		echo ""
 	echo -n "0	"
-	for ((i=0; i<$n; i++))
+	for ((i=1; i<$count_cols; i++))
 	do
-		echo -n "`expr ${arrival_time[$i]} + ${tat[$i]}`"
+		echo -n "${cols[$i]}"
 		echo -n "	   "
 	done
+	echo -n "$h"
 	echo ""
 }
 

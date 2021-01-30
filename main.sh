@@ -1,32 +1,5 @@
 # BASH SCRIPT TO IMPLEMENT VARIOUS CPU SCHEDULING ALGORITHMS.
 
-
-#**************** MAIN FUNCTION ****************#
-while :
-do
-	echo "-------------------------------------"
-	echo " Press any key to exit "
-	echo "-------------------------------------"
-	echo "[1] First Come First Served Algorithm"
-	echo "[2] Non Pre-emptive Shortest Job First"
-	echo "[3] Pre-emptive Shortest Job First "
-	echo "[4] Non Pre-emptive Priority Scheduling"
-	echo "[5] Round Robin Algorithm"
-	echo "======================="
-	
-	echo -n "Enter your menu choice [1-5]: "
-	read yourch
-	
-	case $yourch in
-		1) fcfs ;;
-		2) sjfnp ;;
-		3) sjfp ;;
-		4) npps ;;
-		5) rr ;;
-		*) exit 0 ;;
-	esca
-done
-
 fcfs(){
     # Function to implement first come first served CPU scheduling algorithm.
 
@@ -106,6 +79,7 @@ fcfs(){
         findTurnAroundTime
         total_wt=0
         total_tat=0
+        echo ""
         border
         printf "|%-18s|%-20s|%-18s|%-20s|%-18s|%-20s|\n" "Process Id" "Burst time" "Arrival time" "Waiting time" "Turn around time" "Completion time"
         border
@@ -118,11 +92,14 @@ fcfs(){
             #echo "${burst_time[$i]}     ${arrival_time[$i]}     ${waiting_time[$i]}       ${tat[$i]}         $completion_time"
         done
         border
+        echo ""
         avgwt=`echo "scale=3; $total_wt / $n" | bc`
         echo "Average waiting time = $avgwt"
         avgtat=`echo "scale=3; $total_tat / $n" | bc`
         echo "Average turn around time = $avgtat"
-        
+        echo ""
+        echo "GANTT CHART: "
+        echo ""
         for ((i=0; i<8*n+n+1; i++))
         do
             echo -n "-"
@@ -150,7 +127,9 @@ fcfs(){
         echo ""
     }
 
-
+    echo ""
+    echo "--FIRST COME FIRST SERVED SCHEDULING--"
+    echo ""
     echo -n "Enter the number of processes: "
     read n
     for ((i=0; i<$n; i++))
@@ -282,6 +261,9 @@ sjfnp(){
         done
     }
 
+    echo ""
+    echo "--NON PRE-EMPTIVE SHORTEST JOB FIRST ALGORITHM--"
+    echo ""
     echo -n "Enter the number of processes: "
     read n
     for ((i=0; i<$n; i++))
@@ -298,6 +280,7 @@ sjfnp(){
     completionTime
     total_wt=0
     total_tat=0
+    echo ""
     border
     printf "|%-18s|%-20s|%-18s|%-20s|%-18s|%-20s|\n" "Process Id" "Burst time" "Arrival time" "Waiting time" "Turn around time" "Completion time"
     border
@@ -310,11 +293,14 @@ sjfnp(){
         #echo "${burst_time[$i]}     ${arrival_time[$i]}     ${waiting_time[$i]}       ${tat[$i]}         $completion_time"
     done
     border
+    echo ""
     avgwt=`echo "scale=3; $total_wt / $n" | bc`
     echo "Average waiting time = $avgwt"
     avgtat=`echo "scale=3; $total_tat / $n" | bc`
     echo "Average turn around time = $avgtat"
-
+    echo ""
+    echo "GANTT CHART:"
+    echo ""
 
     for ((i=0; i<8*n+n+1; i++))
     do
@@ -489,6 +475,7 @@ sjfp(){
         done
         total_wt=0
         total_tat=0
+        echo ""
         border
         printf "|%-18s|%-20s|%-18s|%-20s|%-18s|%-20s|\n" "Process Id" "Burst time" "Arrival time" "Waiting time" "Turn around time" "Completion time"
         border
@@ -501,11 +488,14 @@ sjfp(){
             #echo "${burst_time[$i]}     ${arrival_time[$i]}     ${waiting_time[$i]}       ${tat[$i]}        ${completion_time[$i]}"
         done
         border
+        echo ""
         avgwt=`echo "scale=3; $total_wt / $n" | bc`
         echo "Average waiting time = $avgwt"
         avgtat=`echo "scale=3; $total_tat / $n" | bc`
         echo "Average turn around time = $avgtat"
-        
+        echo ""
+        echo "GANTT CHART:"
+        echo ""
         count_cols=1
         cols_id[0]=${chart[0]}
         cols[0]=0
@@ -553,7 +543,9 @@ sjfp(){
             
 
 
-
+    echo ""
+    echo "--PRE-EMPTIVE SHORTEST JOB FIRST SCHEDULING--"
+    echo ""
     echo -n "Enter the number of processes: "
     read n
     for ((i=0; i<$n; i++))
@@ -666,7 +658,9 @@ npps(){
     }
 
 
-
+    echo ""
+    echo "--NON PRE-EMPTIVE PRIORITY SCHEDULING--"
+    echo ""
     echo -n "Enter the number of processes: "
     read n
     for ((i=0; i<$n; i++))
@@ -686,6 +680,7 @@ npps(){
     findTurnAroundTime
     total_wt=0
     total_tat=0
+    echo ""
     border
     printf "|%-18s|%-20s|%-18s|%-20s|%-18s|%-20s|\n" "Process Id" "Burst time" "Arrival time" "Waiting time" "Turn around time" "Completion time"
     border
@@ -698,12 +693,15 @@ npps(){
         #echo "${burst_time[$i]}     ${arrival_time[$i]}     ${waiting_time[$i]}       ${tat[$i]}         $completion_time"
     done
     border
+    echo ""
     avgwt=`echo "scale=3; $total_wt / $n" | bc`
     echo "Average waiting time = $avgwt"
     avgtat=`echo "scale=3; $total_tat / $n" | bc`
     echo "Average turn around time = $avgtat"
+    echo ""
 
-
+    echo "GANTT CHART:"
+    echo ""
     for ((i=0; i<8*n+n+1; i++))
     do
         echo -n "-"
@@ -841,6 +839,7 @@ rr(){
         
         total_wt=0
         total_tat=0
+        echo ""
         border
         printf "|%-18s|%-20s|%-18s|%-20s|%-18s|%-20s|\n" "Process Id" "Burst time" "Arrival time" "Waiting time" "Turn around time" "Completion time"
         border
@@ -853,12 +852,15 @@ rr(){
             #echo "${burst_time[$i]}     ${arrival_time[$i]}     ${waiting_time[$i]}       ${tat[$i]}        ${completion_time[$i]}"
         done
         border
+        echo ""
         avgwt=`echo "scale=3; $total_wt / $n" | bc`
         echo "Average waiting time = $avgwt"
         avgtat=`echo "scale=3; $total_tat / $n" | bc`
         echo "Average turn around time = $avgtat"
+        echo ""
 
-
+        echo "GANTT CHART:"
+        echo ""
         for ((i=0; i<8*n+n+1; i++))
         do
             echo -n "-"
@@ -886,6 +888,9 @@ rr(){
         echo ""
     }
 
+    echo ""
+    echo "--ROUND ROBIN SCHEDULING--"
+    echo ""
     echo -n "Enter the number of processes: "
     read n
     for ((i=0; i<$n; i++))
@@ -904,3 +909,29 @@ rr(){
     sort
     calcWaitingtime
 }
+
+#**************** MAIN FUNCTION ****************#
+while :
+do
+	echo "-------------------------------------"
+	echo " Press any key to exit "
+	echo "-------------------------------------"
+	echo "[1] First Come First Served Algorithm"
+	echo "[2] Non Pre-emptive Shortest Job First"
+	echo "[3] Pre-emptive Shortest Job First "
+	echo "[4] Non Pre-emptive Priority Scheduling"
+	echo "[5] Round Robin Algorithm"
+	echo "======================="
+	
+	echo -n "Enter your menu choice [1-5]: "
+	read yourch
+	
+	case $yourch in
+		1) fcfs; read ;;
+		2) sjfnp ; read ;;
+		3) sjfp ; read ;;
+		4) npps; read  ;;
+		5) rr ; read ;;
+		*) exit 0 ; read ;;
+	esac
+done
